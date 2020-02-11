@@ -6,12 +6,16 @@ train_data_independent= np.array([3,4,6,7,12,14,17,15,7,9,11,14,20],np.uint8)
 train_data_dependent= np.array([2,3,5,8,11,14,17,15,7,9,11,14,20],np.uint8)
 
 
-slope = 1.000000000001 #these are random initial position
-constant = 3.0000000001 
+slope = 11.000000000001 #these are random initial position
+constant = 10.0000000001 
 total_cost = 0
+step_size_decider_constant = 0
+
+n_slope_p = [0,0,0]
+n_constant_p = [0,0,0]
 
 #step size can be turned small but will increase the number of itterations
-step_size = 0.0001
+step_size = 1
 
 #matplotlib stuff
 x = np.array(range(30))
@@ -94,11 +98,29 @@ def decider(n_slope,n_constant):
 	#print(n_slope,n_constant)
 	return n_slope,n_constant
 
-for temp3 in range(5000):
-	
+def step_size_decider(n_slope,n_constant):
+	global step_size_decider_constant
+	global step_size
+	step_size_decider_constant = (step_size_decider_constant + 1)%3
+	n_slope_p[step_size_decider_constant] = n_slope
+	n_constant_p[step_size_decider_constant] = n_constant
+
+	if (n_constant_p[0] == n_constant_p[1] == n_constant_p[2]) and (n_slope_p[0] == n_slope_p[1] == n_slope_p[2]) :
+		step_size = step_size * 0.5
+	else :
+		step_size = step_size
+
+
+for temp3 in range(500):
 	slope,constant = decider(slope,constant)
 	y = x*slope + constant
 	plt.plot(x,y)
+	step_size_decider(slope,constant)
+	print("step size is ",step_size)
+
+
+
+
 print(slope,constant)
 
 #initial plot of points
