@@ -1,5 +1,5 @@
 import numpy as np
-import random as rn
+import matplotlib.pyplot as plt
 
 train_data_independent= np.array([3,4,6,7,12,14,17,15,7,9,11,14,20],np.uint8)
 
@@ -7,11 +7,15 @@ train_data_dependent= np.array([2,3,5,8,11,14,17,15,7,9,11,14,20],np.uint8)
 
 
 slope = 1.000000000001 #these are random initial position
-constant = 5.0000000001 
+constant = 3.0000000001 
 total_cost = 0
 
 #step size can be turned small but will increase the number of itterations
-step_size = 0.001
+step_size = 0.0001
+
+#matplotlib stuff
+x = np.array(range(30))
+
 
 
 def cost_calculate(array_pos,n_slope,n_constant):
@@ -23,6 +27,7 @@ def cost_calculate(array_pos,n_slope,n_constant):
 def actual_total_cost(n_slope,n_constant):
 	global total_cost
 	total_cost = 0
+	# dont know why for loop goes out of array index when not specified 
 	for temp1 in range(13):
 		temp3 = cost_calculate(temp1,n_slope,n_constant)
 		
@@ -89,6 +94,14 @@ def decider(n_slope,n_constant):
 	#print(n_slope,n_constant)
 	return n_slope,n_constant
 
-for temp3 in range(10000):
+for temp3 in range(5000):
+	
 	slope,constant = decider(slope,constant)
+	y = x*slope + constant
+	plt.plot(x,y)
 print(slope,constant)
+
+#initial plot of points
+plt.plot(train_data_dependent,train_data_independent,'ro')
+
+plt.show()
