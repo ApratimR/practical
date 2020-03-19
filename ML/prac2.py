@@ -28,6 +28,8 @@ def logistic(parameter1):
 # initial starting position
 pos = 1
 
+# matplotlib stuff
+x = np.array(range(30))
 
 
 def total_cost_calc(inde_data,dep_data,pos):
@@ -71,5 +73,11 @@ def step_size_decider(parameter1):
 
 for temp1 in range(1000):
     pos = pos_adjuster(inde_data,dep_data,pos,step_size)
-    print("threshold is at ",pos,"and step size is = ",step_size)
+    print(pos,step_size)
+    y = logistic(x-pos)
+    plt.plot(x,y)
     step_size_decider(pos)
+
+print("threshold is at ",pos,"and step size is = ",step_size)
+plt.plot(inde_data,dep_data,"ro")
+plt.show()
